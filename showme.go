@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"strconv"
 	"strings"
 )
 
@@ -20,7 +21,7 @@ func main() {
 	title = strings.Replace(title, "_", "%20", -1)
 
 	url := strings.Join([]string{apiBaseURL, titleQueryURL, title}, "")
-	fmt.Println("url:", url)
+	// fmt.Println("url:", url)
 
 	resp, err := http.Get(url)
 	if err != nil {
@@ -42,5 +43,23 @@ func main() {
 
 	var jsonResp JsonResponse
 	json.Unmarshal([]byte(body), &jsonResp)
-	fmt.Println("jsonResp:", jsonResp)
+	// fmt.Println("jsonResp:", jsonResp)
+
+	totalTitles, err := strconv.Atoi(jsonResp.Total)
+	if err != nil {
+		fmt.Println("Error converting jsonResp.Total to integer:", err)
+	}
+
+	switch {
+	case totalTitles < 1:
+		fmt.Println("No results found with that title! Please try again.")
+	case totalTitles > 1:
+		fmt.Println("More than one result found! Please narrow down and try again.")
+		// TODO: print out list of found TV show titles in console
+	default:
+		foundTitle := jsonResp.Tv_shows[0]["name"]
+		foundId := jsonResp.Tv_shows[0]["id"]
+		fmt.Println("foundTitle:", foundTitle)
+		fmt.Println("foundId", foundId)
+	}
 }
