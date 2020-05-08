@@ -1,8 +1,11 @@
 package main
 
 import (
+	"encoding/json"
 	"flag"
 	"fmt"
+	"io/ioutil"
+	"net/http"
 	"strings"
 )
 
@@ -18,4 +21,26 @@ func main() {
 
 	url := strings.Join([]string{apiBaseURL, titleQueryURL, title}, "")
 	fmt.Println("url:", url)
+
+	resp, err := http.Get(url)
+	if err != nil {
+		fmt.Println("Error in Get request:", err)
+	}
+	defer resp.Body.Close()
+
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		fmt.Println("Error in reading Body:", err)
+	}
+
+	type JsonResponse struct {
+		Total    string
+		Page     int
+		Pages    int
+		Tv_shows []map[string]interface{}
+	}
+
+	var jsonResp JsonResponse
+	json.Unmarshal([]byte(body), &jsonResp)
+	fmt.Println("jsonResp:", jsonResp)
 }
