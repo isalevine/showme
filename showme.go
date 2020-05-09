@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"os"
 	"strconv"
 	"strings"
 )
@@ -17,7 +18,8 @@ func main() {
 	flag.Parse()
 
 	if flag.Arg(0) == "" {
-		panic("Please provide a TV show title to search!")
+		fmt.Println("Please provide a TV show title to search!")
+		os.Exit(0)
 	}
 
 	// TODO: replace with regex?
