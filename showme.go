@@ -69,3 +69,15 @@ func main() {
 		fmt.Println("foundId", foundId)
 	}
 }
+
+func formatShowTitle(title string) string {
+
+}
+
+func getShowID(title string) int {
+
+}
+
+func getEpisodesByID(id int) []string {
+
+}
