@@ -14,7 +14,22 @@ import (
 const apiBaseURL string = "https://www.episodate.com/api/"
 const titleQueryURL string = "search?q="
 
+type jsonResponse struct {
+	Total    string
+	Page     int
+	Pages    int
+	Tv_shows []map[string]interface{}
+}
+
 func main() {
+	var url = createURL()
+	// fmt.Println("url:", url)
+
+	var id = getShowID(url)
+	fmt.Println("id:", id)
+}
+
+func createURL() string {
 	flag.Parse()
 
 	if flag.Arg(0) == "" {
@@ -22,33 +37,26 @@ func main() {
 		os.Exit(0)
 	}
 
-	var title = formatShowTitle(flag.Arg(0))
+	return formatTitleQueryURL(flag.Arg(0))
+}
 
-	resp, err := http.Get(url)
-	if err != nil {
-		fmt.Println("Error in Get request:", err)
-	}
-	defer resp.Body.Close()
+func formatTitleQueryURL(title string) string {
+	// TODO: replace with regex?
+	var formattedTitle = strings.Replace(title, " ", "%20", -1)
+	formattedTitle = strings.Replace(formattedTitle, "_", "%20", -1)
 
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		fmt.Println("Error in reading Body:", err)
-	}
+	url := strings.Join([]string{apiBaseURL, titleQueryURL, formattedTitle}, "")
+	fmt.Println("url:", url)
+	return url
+}
 
-	type JSONResponse struct {
-		Total   string
-		Page    int
-		Pages   int
-		TvShows []map[string]interface{}
-	}
-
-	var jsonResp JSONResponse
-	json.Unmarshal([]byte(body), &jsonResp)
-	// fmt.Println("jsonResp:", jsonResp)
+func getShowID(url string) int {
+	var jsonResp = queryShowTitle(url)
 
 	totalTitles, err := strconv.Atoi(jsonResp.Total)
 	if err != nil {
 		fmt.Println("Error converting jsonResp.Total to integer:", err)
+		os.Exit(0)
 	}
 
 	switch {
@@ -58,27 +66,36 @@ func main() {
 		fmt.Println("More than one result found! Please narrow down and try again.")
 		// TODO: print out list of found TV show titles in console
 	default:
-		foundTitle := jsonResp.TvShows[0]["name"]
-		foundID := jsonResp.TvShows[0]["id"]
+		foundTitle := jsonResp.Tv_shows[0]["name"]
+		foundID := jsonResp.Tv_shows[0]["id"]
 		fmt.Println("foundTitle:", foundTitle)
 		fmt.Println("foundID", foundID)
 	}
+
+	return int(jsonResp.Tv_shows[0]["id"].(float64))
 }
 
-func formatShowTitle(title string) string {
-	// TODO: replace with regex?
-	var formattedTitle = strings.Replace(title, " ", "%20", -1)
-	formattedTitle = strings.Replace(title, "_", "%20", -1)
+func queryShowTitle(url string) jsonResponse {
+	resp, err := http.Get(url)
+	if err != nil {
+		fmt.Println("Error in Get request:", err)
+		os.Exit(0)
+	}
+	defer resp.Body.Close()
 
-	url := strings.Join([]string{apiBaseURL, titleQueryURL, formattedTitle}, "")
-	// fmt.Println("url:", url)
-	return url
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		fmt.Println("Error in reading Body:", err)
+		os.Exit(0)
+	}
+
+	var jsonResp jsonResponse
+	json.Unmarshal([]byte(body), &jsonResp)
+	// fmt.Println("jsonResp:", jsonResp)
+
+	return jsonResp
 }
 
-func getShowID(title string) int {
+// func getEpisodesByID(id int) []string {
 
-}
-
-func getEpisodesByID(id int) []string {
-
-}
+// }
