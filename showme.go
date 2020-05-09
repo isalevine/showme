@@ -5,10 +5,12 @@ import (
 	"flag"
 	"fmt"
 	"io/ioutil"
+	"math/rand"
 	"net/http"
 	"os"
 	"strconv"
 	"strings"
+	"time"
 )
 
 const apiBaseURL string = "https://www.episodate.com/api/"
@@ -34,8 +36,10 @@ func main() {
 	// fmt.Println("id:", id)
 
 	var episodes = getEpisodesByID(id)
-	fmt.Println("episodes:", episodes)
+	// fmt.Println("episodes:", episodes)
 	// getEpisodesByID(id)
+
+	selectRandomEpisodeTitle(episodes)
 }
 
 func createURL() string {
@@ -139,4 +143,17 @@ func queryShowID(url string) idQueryResponse {
 	// fmt.Println("jsonResp:", jsonResp)
 
 	return jsonResp
+}
+
+func selectRandomEpisodeTitle(episodes []interface{}) string {
+	// https://stackoverflow.com/a/33994791
+	seed := rand.NewSource(time.Now().Unix())
+	randomInt := rand.New(seed)
+	episodeNumber := randomInt.Intn(len(episodes))
+	episode := episodes[episodeNumber : episodeNumber+1][0]
+	fmt.Println(`episode`, episode)
+	fmt.Println("%T", episode)
+	// title := episode["name"]
+	// fmt.Println("title:", title)
+	return ""
 }
