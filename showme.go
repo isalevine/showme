@@ -11,10 +11,10 @@ import (
 	"strings"
 )
 
-func main() {
-	const apiBaseURL string = "https://www.episodate.com/api/"
-	const titleQueryURL string = "search?q="
+const apiBaseURL string = "https://www.episodate.com/api/"
+const titleQueryURL string = "search?q="
 
+func main() {
 	flag.Parse()
 
 	if flag.Arg(0) == "" {
@@ -22,12 +22,7 @@ func main() {
 		os.Exit(0)
 	}
 
-	// TODO: replace with regex?
-	var title = strings.Replace(flag.Arg(0), " ", "%20", -1)
-	title = strings.Replace(title, "_", "%20", -1)
-
-	url := strings.Join([]string{apiBaseURL, titleQueryURL, title}, "")
-	// fmt.Println("url:", url)
+	var title = formatShowTitle(flag.Arg(0))
 
 	resp, err := http.Get(url)
 	if err != nil {
@@ -40,14 +35,14 @@ func main() {
 		fmt.Println("Error in reading Body:", err)
 	}
 
-	type JsonResponse struct {
-		Total    string
-		Page     int
-		Pages    int
-		Tv_shows []map[string]interface{}
+	type JSONResponse struct {
+		Total   string
+		Page    int
+		Pages   int
+		TvShows []map[string]interface{}
 	}
 
-	var jsonResp JsonResponse
+	var jsonResp JSONResponse
 	json.Unmarshal([]byte(body), &jsonResp)
 	// fmt.Println("jsonResp:", jsonResp)
 
@@ -63,15 +58,21 @@ func main() {
 		fmt.Println("More than one result found! Please narrow down and try again.")
 		// TODO: print out list of found TV show titles in console
 	default:
-		foundTitle := jsonResp.Tv_shows[0]["name"]
-		foundId := jsonResp.Tv_shows[0]["id"]
+		foundTitle := jsonResp.TvShows[0]["name"]
+		foundID := jsonResp.TvShows[0]["id"]
 		fmt.Println("foundTitle:", foundTitle)
-		fmt.Println("foundId", foundId)
+		fmt.Println("foundID", foundID)
 	}
 }
 
 func formatShowTitle(title string) string {
+	// TODO: replace with regex?
+	var formattedTitle = strings.Replace(title, " ", "%20", -1)
+	formattedTitle = strings.Replace(title, "_", "%20", -1)
 
+	url := strings.Join([]string{apiBaseURL, titleQueryURL, formattedTitle}, "")
+	// fmt.Println("url:", url)
+	return url
 }
 
 func getShowID(title string) int {
