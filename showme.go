@@ -33,9 +33,9 @@ func main() {
 	var id = getShowID(url)
 	// fmt.Println("id:", id)
 
-	// var episodes = getEpisodesByID(id)
-	// fmt.Println("episodes:", episodes)
-	getEpisodesByID(id)
+	var episodes = getEpisodesByID(id)
+	fmt.Println("episodes:", episodes)
+	// getEpisodesByID(id)
 }
 
 func createURL() string {
@@ -111,13 +111,13 @@ func formatIDQueryURL(id int) string {
 	return url
 }
 
-func getEpisodesByID(id int) {
+func getEpisodesByID(id int) []interface{} {
 	var url = formatIDQueryURL(id)
 	// fmt.Println("url:", url)
 
 	var jsonResp = queryShowID(url)
-	fmt.Println("jsonResp:", jsonResp)
-	return
+	// fmt.Println(`jsonResp.TvShow["episodes"]`, jsonResp.TvShow["episodes"])
+	return jsonResp.TvShow["episodes"].([]interface{})
 }
 
 func queryShowID(url string) idQueryResponse {
@@ -136,7 +136,7 @@ func queryShowID(url string) idQueryResponse {
 
 	var jsonResp idQueryResponse
 	json.Unmarshal([]byte(body), &jsonResp)
-	fmt.Println("jsonResp:", jsonResp)
+	// fmt.Println("jsonResp:", jsonResp)
 
 	return jsonResp
 }
