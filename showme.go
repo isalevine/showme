@@ -16,6 +16,10 @@ func main() {
 
 	flag.Parse()
 
+	if flag.Arg(0) == "" {
+		panic("Please provide a TV show title to search!")
+	}
+
 	// TODO: replace with regex?
 	var title = strings.Replace(flag.Arg(0), " ", "%20", -1)
 	title = strings.Replace(title, "_", "%20", -1)
