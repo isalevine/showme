@@ -13,12 +13,17 @@ import (
 
 const apiBaseURL string = "https://www.episodate.com/api/"
 const titleQueryURL string = "search?q="
+const idQueryURL string = "show-details?q="
 
-type jsonResponse struct {
+type titleQueryResponse struct {
 	Total    string
 	Page     int
 	Pages    int
 	Tv_shows []map[string]interface{}
+}
+
+type idQueryResponse struct {
+	TvShow map[string]interface{}
 }
 
 func main() {
@@ -26,7 +31,11 @@ func main() {
 	// fmt.Println("url:", url)
 
 	var id = getShowID(url)
-	fmt.Println("id:", id)
+	// fmt.Println("id:", id)
+
+	// var episodes = getEpisodesByID(id)
+	// fmt.Println("episodes:", episodes)
+	getEpisodesByID(id)
 }
 
 func createURL() string {
@@ -75,7 +84,7 @@ func getShowID(url string) int {
 	return int(jsonResp.Tv_shows[0]["id"].(float64))
 }
 
-func queryShowTitle(url string) jsonResponse {
+func queryShowTitle(url string) titleQueryResponse {
 	resp, err := http.Get(url)
 	if err != nil {
 		fmt.Println("Error in Get request:", err)
@@ -85,17 +94,49 @@ func queryShowTitle(url string) jsonResponse {
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		fmt.Println("Error in reading Body:", err)
+		fmt.Println("Error in reading queryShowTitle Body:", err)
 		os.Exit(0)
 	}
 
-	var jsonResp jsonResponse
+	var jsonResp titleQueryResponse
 	json.Unmarshal([]byte(body), &jsonResp)
 	// fmt.Println("jsonResp:", jsonResp)
 
 	return jsonResp
 }
 
-// func getEpisodesByID(id int) []string {
+func formatIDQueryURL(id int) string {
+	url := strings.Join([]string{apiBaseURL, idQueryURL, strconv.Itoa(id)}, "")
+	// fmt.Println("url:", url)
+	return url
+}
 
-// }
+func getEpisodesByID(id int) {
+	var url = formatIDQueryURL(id)
+	// fmt.Println("url:", url)
+
+	var jsonResp = queryShowID(url)
+	fmt.Println("jsonResp:", jsonResp)
+	return
+}
+
+func queryShowID(url string) idQueryResponse {
+	fmt.Println("url:", url)
+	resp, err := http.Get(url)
+	if err != nil {
+		fmt.Println("Error in Get request:", err)
+		os.Exit(0)
+	}
+	defer resp.Body.Close()
+
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		fmt.Println("Error in reading queryShowID Body:", err)
+	}
+
+	var jsonResp idQueryResponse
+	json.Unmarshal([]byte(body), &jsonResp)
+	fmt.Println("jsonResp:", jsonResp)
+
+	return jsonResp
+}
