@@ -29,17 +29,13 @@ type idQueryResponse struct {
 }
 
 func main() {
-	var url = createURL()
-	// fmt.Println("url:", url)
-
-	var id = getShowID(url)
-	// fmt.Println("id:", id)
-
-	var episodes = getEpisodesByID(id)
-	// fmt.Println("episodes:", episodes)
-	// getEpisodesByID(id)
-
-	selectRandomEpisodeTitle(episodes)
+	url := createURL()
+	showTitle, id := getShowTitleAndID(url)
+	episodes := getEpisodesByID(id)
+	episode := selectRandomEpisode(episodes)
+	episodeTitle := formatEpisodeTitle(episode)
+	output := strings.Join([]string{"OK! From the show ", showTitle, ", you should watch:\n\n", episodeTitle, "\n\nEnjoy!"}, "")
+	fmt.Println(output)
 }
 
 func createURL() string {
@@ -59,11 +55,10 @@ func formatTitleQueryURL(title string) string {
 	formattedTitle = strings.Replace(formattedTitle, "_", "%20", -1)
 
 	url := strings.Join([]string{apiBaseURL, titleQueryURL, formattedTitle}, "")
-	fmt.Println("url:", url)
 	return url
 }
 
-func getShowID(url string) int {
+func getShowTitleAndID(url string) (string, int) {
 	var jsonResp = queryShowTitle(url)
 
 	totalTitles, err := strconv.Atoi(jsonResp.Total)
@@ -78,14 +73,9 @@ func getShowID(url string) int {
 	case totalTitles > 1:
 		fmt.Println("More than one result found! Please narrow down and try again.")
 		// TODO: print out list of found TV show titles in console
-	default:
-		foundTitle := jsonResp.Tv_shows[0]["name"]
-		foundID := jsonResp.Tv_shows[0]["id"]
-		fmt.Println("foundTitle:", foundTitle)
-		fmt.Println("foundID", foundID)
 	}
 
-	return int(jsonResp.Tv_shows[0]["id"].(float64))
+	return jsonResp.Tv_shows[0]["name"].(string), int(jsonResp.Tv_shows[0]["id"].(float64))
 }
 
 func queryShowTitle(url string) titleQueryResponse {
@@ -145,15 +135,16 @@ func queryShowID(url string) idQueryResponse {
 	return jsonResp
 }
 
-func selectRandomEpisodeTitle(episodes []interface{}) string {
+func selectRandomEpisode(episodes []interface{}) map[string]interface{} {
 	// https://stackoverflow.com/a/33994791
 	seed := rand.NewSource(time.Now().Unix())
 	randomInt := rand.New(seed)
 	episodeNumber := randomInt.Intn(len(episodes))
-	episode := episodes[episodeNumber : episodeNumber+1][0]
-	fmt.Println(`episode`, episode)
-	fmt.Println("%T", episode)
-	// title := episode["name"]
-	// fmt.Println("title:", title)
-	return ""
+	episode := episodes[episodeNumber : episodeNumber+1][0].(map[string]interface{})
+	return episode
+}
+
+func formatEpisodeTitle(episode map[string]interface{}) string {
+	formattedTitle := strings.Join([]string{"Season ", strconv.Itoa(int(episode["season"].(float64))), ", Episode ", strconv.Itoa(int(episode["episode"].(float64))), " - ", episode["name"].(string)}, "")
+	return formattedTitle
 }
