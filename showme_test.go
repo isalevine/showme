@@ -2,6 +2,7 @@ package main
 
 import (
 	"os"
+	"strings"
 	"testing"
 	"time"
 )
@@ -37,12 +38,12 @@ func TestCreateTitleQueryURL(t *testing.T) {
 func TestGetShowTitleAndID(t *testing.T) {
 	expectedOutputShowTitle := "30 Rock"
 	expectedOutputShowID := 11020
-	showTitle, id := getShowTitleAndID("https://www.episodate.com/api/search?q=30%20Rock")
+	showTitle, id := getShowTitleAndID("https://www.episodate.com/api/search?q=30%%20Rock")
 	if showTitle != expectedOutputShowTitle {
-		t.Errorf("getShowTitleAndID failed, expected %v, got %v", expectedOutputShowTitle, showTitle)
+		t.Errorf("getShowTitleAndID(\"https://www.episodate.com/api/search?q=30%%20Rock\") failed, expected %v, got %v", expectedOutputShowTitle, showTitle)
 	}
 	if id != expectedOutputShowID {
-		t.Errorf("getShowTitleAndID failed, expected %v, got %v", expectedOutputShowID, id)
+		t.Errorf("getShowTitleAndID(\"https://www.episodate.com/api/search?q=30%%20Rock\") failed, expected %v, got %v", expectedOutputShowID, id)
 	}
 }
 
@@ -53,16 +54,23 @@ func TestGetEpisodesByID(t *testing.T) {
 	}
 }
 
+// TODO: find out if having a different Unix time as seed will ALWAYS result in a different random number
+// (and thus, always select 2 different episodes from the array?)
 func TestSelectRandomEpisode(t *testing.T) {
 	episodes := getEpisodesByID(11020)
 	episode1 := selectRandomEpisode(episodes)
 	time.Sleep(1 * time.Second)
 	episode2 := selectRandomEpisode(episodes)
 	if episode1["name"] == episode2["name"] {
-		t.Errorf("selectRandomEpisode failed, expected '%v' and '%v' to be different episode names", episode1["name"], episode2["name"])
+		t.Errorf("selectRandomEpisode(episodes) failed, expected '%v' and '%v' to be different episode names", episode1["name"], episode2["name"])
 	}
 }
 
 func TestFormatEpisodeTitle(t *testing.T) {
-
+	episodes := getEpisodesByID(11020)
+	episode := selectRandomEpisode(episodes)
+	episodeTitle := formatEpisodeTitle(episode)
+	if !strings.Contains(episodeTitle, episode["name"].(string)) {
+		t.Errorf("formatEpisodeTitle(episode) failed, expected %v to contain %v", episodeTitle, episode["name"])
+	}
 }
