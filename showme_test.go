@@ -32,3 +32,30 @@ func TestCreateTitleQueryURL(t *testing.T) {
 		t.Errorf("createTitleQueryURL(\"30 Rock\") failed, expected %v, got %v", expectedOutput, url)
 	}
 }
+
+func TestGetShowTitleAndID(t *testing.T) {
+	expectedOutputShowTitle := "30 Rock"
+	expectedOutputShowID := 11020
+	showTitle, id := getShowTitleAndID("https://www.episodate.com/api/search?q=30%20Rock")
+	if showTitle != expectedOutputShowTitle {
+		t.Errorf("getShowTitleAndID failed, expected %v, got %v", expectedOutputShowTitle, showTitle)
+	}
+	if id != expectedOutputShowID {
+		t.Errorf("getShowTitleAndID failed, expected %v, got %v", expectedOutputShowID, id)
+	}
+}
+
+func TestGetEpisodesByID(t *testing.T) {
+	episodes := getEpisodesByID(11020)
+	if len(episodes) != 138 {
+		t.Errorf("getEpisodesByID(11020) failed, expected length to be 138, got %v", len(episodes))
+	}
+}
+
+func TestSelectRandomEpisode(t *testing.T) {
+
+}
+
+func TestFormatEpisodeTitle(t *testing.T) {
+
+}
