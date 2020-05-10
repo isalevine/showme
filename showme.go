@@ -5,9 +5,9 @@ import (
 	"flag"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"math/rand"
 	"net/http"
-	"os"
 	"strconv"
 	"strings"
 	"time"
@@ -42,8 +42,7 @@ func main() {
 func parseFlag() string {
 	flag.Parse()
 	if flag.Arg(0) == "" {
-		fmt.Println("Please provide a TV show title to search!")
-		os.Exit(0)
+		log.Fatal("Please provide a TV show title to search!")
 	}
 	return flag.Arg(0)
 }
@@ -61,15 +60,14 @@ func getShowTitleAndID(url string) (string, int) {
 	var jsonResp = queryShowTitle(url)
 	totalTitles, err := strconv.Atoi(jsonResp.Total)
 	if err != nil {
-		fmt.Println("Error converting jsonResp.Total to integer:", err)
-		os.Exit(0)
+		log.Fatal(err)
 	}
 
 	switch {
 	case totalTitles < 1:
-		fmt.Println("No results found with that title! Please try again.")
+		log.Fatal("No results found with that title! Please try again.")
 	case totalTitles > 1:
-		fmt.Println("More than one result found! Please narrow down and try again.")
+		log.Fatal("More than one result found! Please narrow down and try again.")
 		// TODO: print out list of found TV show titles in console
 	}
 
@@ -79,15 +77,13 @@ func getShowTitleAndID(url string) (string, int) {
 func queryShowTitle(url string) titleQueryResponse {
 	resp, err := http.Get(url)
 	if err != nil {
-		fmt.Println("Error in Get request:", err)
-		os.Exit(0)
+		log.Fatal(err)
 	}
 	defer resp.Body.Close()
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		fmt.Println("Error in reading queryShowTitle Body:", err)
-		os.Exit(0)
+		log.Fatal(err)
 	}
 
 	var jsonResp titleQueryResponse
@@ -109,14 +105,13 @@ func getEpisodesByID(id int) []interface{} {
 func queryShowID(url string) idQueryResponse {
 	resp, err := http.Get(url)
 	if err != nil {
-		fmt.Println("Error in Get request:", err)
-		os.Exit(0)
+		log.Fatal(err)
 	}
 	defer resp.Body.Close()
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		fmt.Println("Error in reading queryShowID Body:", err)
+		log.Fatal(err)
 	}
 
 	var jsonResp idQueryResponse
