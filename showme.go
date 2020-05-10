@@ -30,7 +30,7 @@ type idQueryResponse struct {
 
 func main() {
 	flagInput := parseFlag()
-	url := createURL(flagInput)
+	url := createTitleQueryURL(flagInput)
 	showTitle, id := getShowTitleAndID(url)
 	episodes := getEpisodesByID(id)
 	episode := selectRandomEpisode(episodes)
@@ -48,19 +48,10 @@ func parseFlag() string {
 	return flag.Arg(0)
 }
 
-func createURL(flagInput string) string {
-	flag.Parse()
-	if flag.Arg(0) == "" {
-		fmt.Println("Please provide a TV show title to search!")
-		os.Exit(0)
-	}
-	url := formatTitleQueryURL(flag.Arg(0))
-	return url
-}
-
-func formatTitleQueryURL(title string) string {
+func createTitleQueryURL(flagInput string) string {
+	// TODO: check for aliases matching flagInput
 	// TODO: replace with regex?
-	formattedTitle := strings.Replace(title, " ", "%20", -1)
+	formattedTitle := strings.Replace(flagInput, " ", "%20", -1)
 	formattedTitle = strings.Replace(formattedTitle, "_", "%20", -1)
 	url := strings.Join([]string{apiBaseURL, titleQueryURL, formattedTitle}, "")
 	return url
