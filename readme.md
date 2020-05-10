@@ -28,11 +28,12 @@ Before building binary:
 $ go run showme.go "30 rock"
 
 // Output:
-    OK! From the show '30 Rock', you should watch:
 
-    Season 4, Episode 22 - I Do Do
+OK! From the show '30 Rock', you should watch:
 
-    Enjoy!
+Season 4, Episode 22 - I Do Do
+
+Enjoy!
 ```
 
 After building binary:
@@ -40,11 +41,12 @@ After building binary:
 $ ./showme "30 rock"
 
 // Output:
-    OK! From the show '30 Rock', you should watch:
 
-    Season 4, Episode 22 - I Do Do
+OK! From the show '30 Rock', you should watch:
 
-    Enjoy!
+Season 4, Episode 22 - I Do Do
+
+Enjoy!
 ```
 
 # Notes
