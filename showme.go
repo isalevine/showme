@@ -34,33 +34,29 @@ func main() {
 	episodes := getEpisodesByID(id)
 	episode := selectRandomEpisode(episodes)
 	episodeTitle := formatEpisodeTitle(episode)
-	output := strings.Join([]string{"OK! From the show ", showTitle, ", you should watch:\n\n", episodeTitle, "\n\nEnjoy!"}, "")
+	output := strings.Join([]string{"OK! From the show '", showTitle, "', you should watch:\n\n", episodeTitle, "\n\nEnjoy!"}, "")
 	fmt.Println(output)
 }
 
 func createURL() string {
 	flag.Parse()
-
 	if flag.Arg(0) == "" {
 		fmt.Println("Please provide a TV show title to search!")
 		os.Exit(0)
 	}
-
 	return formatTitleQueryURL(flag.Arg(0))
 }
 
 func formatTitleQueryURL(title string) string {
 	// TODO: replace with regex?
-	var formattedTitle = strings.Replace(title, " ", "%20", -1)
+	formattedTitle := strings.Replace(title, " ", "%20", -1)
 	formattedTitle = strings.Replace(formattedTitle, "_", "%20", -1)
-
 	url := strings.Join([]string{apiBaseURL, titleQueryURL, formattedTitle}, "")
 	return url
 }
 
 func getShowTitleAndID(url string) (string, int) {
 	var jsonResp = queryShowTitle(url)
-
 	totalTitles, err := strconv.Atoi(jsonResp.Total)
 	if err != nil {
 		fmt.Println("Error converting jsonResp.Total to integer:", err)
@@ -94,28 +90,21 @@ func queryShowTitle(url string) titleQueryResponse {
 
 	var jsonResp titleQueryResponse
 	json.Unmarshal([]byte(body), &jsonResp)
-	// fmt.Println("jsonResp:", jsonResp)
-
 	return jsonResp
 }
 
 func formatIDQueryURL(id int) string {
 	url := strings.Join([]string{apiBaseURL, idQueryURL, strconv.Itoa(id)}, "")
-	// fmt.Println("url:", url)
 	return url
 }
 
 func getEpisodesByID(id int) []interface{} {
 	var url = formatIDQueryURL(id)
-	// fmt.Println("url:", url)
-
 	var jsonResp = queryShowID(url)
-	// fmt.Println(`jsonResp.TvShow["episodes"]`, jsonResp.TvShow["episodes"])
 	return jsonResp.TvShow["episodes"].([]interface{})
 }
 
 func queryShowID(url string) idQueryResponse {
-	fmt.Println("url:", url)
 	resp, err := http.Get(url)
 	if err != nil {
 		fmt.Println("Error in Get request:", err)
@@ -130,8 +119,6 @@ func queryShowID(url string) idQueryResponse {
 
 	var jsonResp idQueryResponse
 	json.Unmarshal([]byte(body), &jsonResp)
-	// fmt.Println("jsonResp:", jsonResp)
-
 	return jsonResp
 }
 
