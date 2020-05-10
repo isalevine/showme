@@ -18,10 +18,10 @@ const titleQueryURL string = "search?q="
 const idQueryURL string = "show-details?q="
 
 type titleQueryResponse struct {
-	Total    string
-	Page     int
-	Pages    int
-	Tv_shows []map[string]interface{}
+	Total   string
+	Page    int
+	Pages   int
+	TvShows []map[string]interface{} `json:"tv_shows"`
 }
 
 type idQueryResponse struct {
@@ -73,7 +73,7 @@ func getShowTitleAndID(url string) (string, int) {
 		// TODO: print out list of found TV show titles in console
 	}
 
-	return jsonResp.Tv_shows[0]["name"].(string), int(jsonResp.Tv_shows[0]["id"].(float64))
+	return jsonResp.TvShows[0]["name"].(string), int(jsonResp.TvShows[0]["id"].(float64))
 }
 
 func queryShowTitle(url string) titleQueryResponse {
