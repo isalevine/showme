@@ -54,21 +54,47 @@ func TestGetEpisodesByID(t *testing.T) {
 	}
 }
 
-// TODO: find out if having a different Unix time as seed will ALWAYS result in a different random number
-// (and thus, always select 2 different episodes from the array?)
 func TestSelectRandomEpisode(t *testing.T) {
-	episodes := getEpisodesByID(11020)
-	episode1 := selectRandomEpisode(episodes)
+	// TODO: To decrease likeliness of accidentally selecting same 2 episodes,
+	// can also just use `episodes := getEpisodesByID(11020)`
+	// (but then this becomes an *integration* test, not a *unit* test)
+	episode1 := map[string]interface{}{
+		"name":    "Pilot",
+		"season":  1.0,
+		"episode": 1.0,
+	}
+	episode2 := map[string]interface{}{
+		"name":    "The Aftermath",
+		"season":  1.0,
+		"episode": 2.0,
+	}
+	episode3 := map[string]interface{}{
+		"name":    "Blind Date",
+		"season":  1.0,
+		"episode": 3.0,
+	}
+	episode4 := map[string]interface{}{
+		"name":    "Jack the Writer",
+		"season":  1.0,
+		"episode": 4.0,
+	}
+	episodes := make([]interface{}, 0)
+	episodes = append(episodes, episode1, episode2, episode3, episode4)
+
+	randomEpisode1 := selectRandomEpisode(episodes)
 	time.Sleep(1 * time.Second)
-	episode2 := selectRandomEpisode(episodes)
-	if episode1["name"] == episode2["name"] {
-		t.Errorf("selectRandomEpisode(episodes) failed, expected '%v' and '%v' to be different episode names", episode1["name"], episode2["name"])
+	randomEpisode2 := selectRandomEpisode(episodes)
+	if randomEpisode1["name"] == randomEpisode2["name"] {
+		t.Errorf("selectRandomEpisode(episodes) failed, expected '%v' and '%v' to be different episode names", randomEpisode1["name"], randomEpisode2["name"])
 	}
 }
 
 func TestFormatEpisodeTitle(t *testing.T) {
-	episodes := getEpisodesByID(11020)
-	episode := selectRandomEpisode(episodes)
+	episode := map[string]interface{}{
+		"name":    "Pilot",
+		"season":  1.0,
+		"episode": 1.0,
+	}
 	episodeTitle := formatEpisodeTitle(episode)
 	if !strings.Contains(episodeTitle, episode["name"].(string)) {
 		t.Errorf("formatEpisodeTitle(episode) failed, expected %v to contain %v", episodeTitle, episode["name"])
