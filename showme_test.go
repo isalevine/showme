@@ -3,6 +3,7 @@ package main
 import (
 	"os"
 	"testing"
+	"time"
 )
 
 // func main() {
@@ -53,7 +54,13 @@ func TestGetEpisodesByID(t *testing.T) {
 }
 
 func TestSelectRandomEpisode(t *testing.T) {
-
+	episodes := getEpisodesByID(11020)
+	episode1 := selectRandomEpisode(episodes)
+	time.Sleep(1 * time.Second)
+	episode2 := selectRandomEpisode(episodes)
+	if episode1["name"] == episode2["name"] {
+		t.Errorf("selectRandomEpisode failed, expected '%v' and '%v' to be different episode names", episode1["name"], episode2["name"])
+	}
 }
 
 func TestFormatEpisodeTitle(t *testing.T) {
