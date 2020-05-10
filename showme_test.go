@@ -24,3 +24,11 @@ func TestParseFlag(t *testing.T) {
 		t.Errorf("parseFlag() failed, expected %v, got %v", expectedOutput, flagInput)
 	}
 }
+
+func TestCreateTitleQueryURL(t *testing.T) {
+	expectedOutput := "https://www.episodate.com/api/search?q=30%20Rock"
+	url := createTitleQueryURL("30 Rock")
+	if url != expectedOutput {
+		t.Errorf("createTitleQueryURL(\"30 Rock\") failed, expected %v, got %v", expectedOutput, url)
+	}
+}
