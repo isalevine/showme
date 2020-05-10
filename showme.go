@@ -29,7 +29,8 @@ type idQueryResponse struct {
 }
 
 func main() {
-	url := createURL()
+	flagInput := parseFlag()
+	url := createURL(flagInput)
 	showTitle, id := getShowTitleAndID(url)
 	episodes := getEpisodesByID(id)
 	episode := selectRandomEpisode(episodes)
@@ -38,13 +39,23 @@ func main() {
 	fmt.Println(output)
 }
 
-func createURL() string {
+func parseFlag() string {
 	flag.Parse()
 	if flag.Arg(0) == "" {
 		fmt.Println("Please provide a TV show title to search!")
 		os.Exit(0)
 	}
-	return formatTitleQueryURL(flag.Arg(0))
+	return flag.Arg(0)
+}
+
+func createURL(flagInput string) string {
+	flag.Parse()
+	if flag.Arg(0) == "" {
+		fmt.Println("Please provide a TV show title to search!")
+		os.Exit(0)
+	}
+	url := formatTitleQueryURL(flag.Arg(0))
+	return url
 }
 
 func formatTitleQueryURL(title string) string {
