@@ -4,7 +4,7 @@ showme is a simple Go script that takes a TV show title as an argument, and quer
 
 # Setup
 ## Requirements
-* Go version 1.14.2
+* Go version 1.14.2 or higher
 * Written and tested in macOS Mojave version 10.14.6
 
 ## Installation
