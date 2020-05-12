@@ -44,7 +44,7 @@ $ ./showme "30 rock"
 
 OK! From the show '30 Rock', you should watch:
 
-Season 4, Episode 22 - I Do Do
+Season 6, Episode 15 - The Shower Principle
 
 Enjoy!
 ```
