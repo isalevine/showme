@@ -21,6 +21,11 @@ If you want to build the binary:
 Without building the binary, you can run `go run showme.go "tv show title"`.
 After building the binary, you can run `./showme "tv show title"`.
 
+Alternately, you can add `alias showme="go run ~/coding/golang/showme/showme.go"` to your bash profile (or `alias showme="go run ~/coding/golang/showme/showme"` for the binary). This will allow you to execute `showme "tv show title"` from anywhere in your console.
+
+**Note that at this time, title names should be exact--including punctuation!** For example, `showme "bob's burgers"` will work, but `showme "bobs burgers` (without the apostrophe) will not.
+A future update will print out a list of suggested titles if an exact match is not found.
+
 
 ## Examples
 Before building binary:
@@ -36,6 +41,21 @@ Season 4, Episode 22 - I Do Do
 Enjoy!
 ```
 
+After adding `alias showme="go run ~/coding/golang/showme/showme.go"` to bash profile:
+```
+$ showme "30 rock"
+
+// Output:
+
+OK! From the show '30 Rock', you should watch:
+
+Season 3, Episode 11 - St. Valentine's Day
+
+Enjoy!
+```
+
+### OR
+
 After building binary:
 ```
 $ ./showme "30 rock"
@@ -45,6 +65,19 @@ $ ./showme "30 rock"
 OK! From the show '30 Rock', you should watch:
 
 Season 6, Episode 15 - The Shower Principle
+
+Enjoy!
+```
+
+After adding `alias showme="go run ~/coding/golang/showme/showme"` to bash profile:
+```
+$ showme "30 rock"
+
+// Output:
+
+OK! From the show '30 Rock', you should watch:
+
+Season 3, Episode 14 - The Funcooker
 
 Enjoy!
 ```
