@@ -28,6 +28,8 @@ A future update will print out a list of suggested titles if an exact match is n
 
 
 ## Examples
+
+### Running Script
 Before building binary:
 ```
 $ go run showme.go "30 rock"
@@ -54,8 +56,7 @@ Season 3, Episode 11 - St. Valentine's Day
 Enjoy!
 ```
 
-### OR
-
+### Running Binary
 After building binary:
 ```
 $ ./showme "30 rock"
