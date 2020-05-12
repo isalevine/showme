@@ -1,5 +1,5 @@
 # What is showme?
-showme is a simple Go script that takes a TV show title as an argument, and queries the Episodate API to find a random episode title for you to watch!
+`showme` is a simple Go script that takes a TV show title as an argument, and queries the Episodate API to find a random episode title for you to watch!
 
 
 # Setup
