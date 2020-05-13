@@ -1,6 +1,28 @@
 # What is showme?
 `showme` is a simple Go script that takes a TV show title as an argument, and queries the Episodate API to find a random episode title for you to watch!
 
+# Highlights
+### 1. This is the first Go script I've written!
+I learned enough Go from scratch to write this in one weekend.
+
+Even though it obviously doesn't take advantage of Go's concurrency, it's nice to take a break from Ruby and play with static typing! I always learn a lot about how data structures are implemented under-the-hood in dynamic languages. 
+
+In this case, [parsing JSON from an API](https://github.com/isalevine/showme/blob/e43fa4be557503224474214e004805a198106a35/showme.go#L90) and [learning about interface{}](https://github.com/isalevine/showme/blob/e43fa4be557503224474214e004805a198106a35/showme.go#L122) have helped me understand how ambiguous data structures (like an API response) have memory allocated!
+
+### 2. I wrote this with TDD, and [all the functions called in `main()` have unit tests](https://github.com/isalevine/showme/blob/master/showme_test.go)!
+Several interesting situations I encountered were:
+* [Mocking command-line argument flags](https://github.com/isalevine/showme/blob/8409ba6eb1357f3726817c71f6bf7117ec730a60/showme_test.go#L12)
+* [Testing pseudo-random number generator functionality](https://github.com/isalevine/showme/blob/8409ba6eb1357f3726817c71f6bf7117ec730a60/showme_test.go#L74) that uses [`time.Now().Unix()` as the seed for the `rand` object](https://github.com/isalevine/showme/blob/e43fa4be557503224474214e004805a198106a35/showme.go#L124)
+* Figuring out the [syntax needed to construct a slice of maps](https://github.com/isalevine/showme/blob/8409ba6eb1357f3726817c71f6bf7117ec730a60/showme_test.go#L70)
+
+### 3. This is a recreation of the core functionality of my first code-school project, [`Show Randomizer`](https://github.com/isalevine/show-randomizer)!
+I had several goals with recreating the TV-show-finding functionality of `showme`:
+* Build it in fewer lines of code.
+* Make the code as readable as possible.
+* Build it with test coverage.
+* Condense the original interface into a single console command, i.e. `showme "30 rock"`.
+I'm proud to say I accomplished all of those goals in the initial version of the code!
+
 
 # Setup
 ## Requirements
