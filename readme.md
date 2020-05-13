@@ -2,7 +2,7 @@
 `showme` is a simple Go script that takes a TV show title as an argument, and queries the Episodate API to find a random episode title for you to watch!
 
 # Highlights
-### 1. This is the first Go script I've written!
+### 1. This is the first Go script I've ever written!
 I learned enough Go from scratch to write this in one weekend.
 
 Even though it obviously doesn't take advantage of Go's concurrency, it's nice to take a break from Ruby and play with static typing! I always learn a lot about how data structures are implemented under-the-hood in dynamic languages. 
