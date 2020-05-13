@@ -40,8 +40,8 @@ If you want to build the binary:
 * You can now run the binary with `./showme "tv show title"`!
 
 You can also execute the script globally with `showme "tv show title"` by adding an alias to your bash profile
-* For the script: add `alias showme="go run ~/coding/golang/showme/showme.go"`
-* For the binary: add `alias showme="go run ~/coding/golang/showme/showme"`
+* For the script: add `alias showme="go run ~/your/path/showme/showme.go"`
+* For the binary: add `alias showme="~/your/path/showme/showme"`
 
 
 # Use
@@ -71,7 +71,7 @@ Season 4, Episode 22 - I Do Do
 Enjoy!
 ```
 
-After adding `alias showme="go run ~/coding/golang/showme/showme.go"` to bash profile:
+After adding `alias showme="go run ~/your/path/showme.go"` to bash profile:
 ```
 $ showme "30 rock"
 
@@ -98,7 +98,7 @@ Season 6, Episode 15 - The Shower Principle
 Enjoy!
 ```
 
-After adding `alias showme="go run ~/coding/golang/showme/showme"` to bash profile:
+After adding `alias showme="go run ~/your/path/showme/showme"` to bash profile:
 ```
 $ showme "30 rock"
 
