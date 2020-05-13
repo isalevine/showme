@@ -7,17 +7,6 @@ import (
 	"time"
 )
 
-// func main() {
-// 	flagInput := parseFlag()
-// 	url := createTitleQueryURL(flagInput)
-// 	showTitle, id := getShowTitleAndID(url)
-// 	episodes := getEpisodesByID(id)
-// 	episode := selectRandomEpisode(episodes)
-// 	episodeTitle := formatEpisodeTitle(episode)
-// 	output := strings.Join([]string{"OK! From the show '", showTitle, "', you should watch:\n\n", episodeTitle, "\n\nEnjoy!"}, "")
-// 	fmt.Println(output)
-// }
-
 func TestParseFlag(t *testing.T) {
 	expectedOutput := "30 Rock"
 	os.Args = []string{"cmd", "30 Rock"}
