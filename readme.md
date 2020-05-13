@@ -15,14 +15,14 @@ Several interesting situations I encountered were:
 * [Testing pseudo-random number generator functionality](https://github.com/isalevine/showme/blob/8409ba6eb1357f3726817c71f6bf7117ec730a60/showme_test.go#L74) that uses [`time.Now().Unix()` as the seed for the `rand` object](https://github.com/isalevine/showme/blob/e43fa4be557503224474214e004805a198106a35/showme.go#L124)
 * Figuring out the [syntax needed to construct a slice of maps](https://github.com/isalevine/showme/blob/8409ba6eb1357f3726817c71f6bf7117ec730a60/showme_test.go#L70)
 
-### 3. This is a recreation of the core functionality of my first code-school project, [Show Randomizer](https://github.com/isalevine/show-randomizer)!
+### 3. This is a recreation of the core functionality of my first code-school project, [`Show Randomizer`](https://github.com/isalevine/show-randomizer)!
 I had several goals with recreating the TV-show-finding functionality of `showme`:
 * Build it in fewer lines of code.
 * Make the code as readable as possible.
 * Build it with test coverage.
 * Condense the original interface into a single console command, i.e. `showme "30 rock"`.
 
-I'm proud to say I accomplished all of those goals in the initial version of the code!
+I'm proud to say I accomplished all of those goals in the [initial version of the code](https://github.com/isalevine/showme/blob/master/showme.go)!
 
 
 # Setup
@@ -39,12 +39,17 @@ If you want to build the binary:
 * Run `go build showme.go`.
 * You can now run the binary with `./showme "tv show title"`!
 
+You can also execute the script globally with `showme "tv show title"` by adding an alias to your bash profile
+* For the script: add `alias showme="go run ~/coding/golang/showme/showme.go"`
+* For the binary: add `alias showme="go run ~/coding/golang/showme/showme"`
+
 
 # Use
 Without building the binary, you can run `go run showme.go "tv show title"`.
+
 After building the binary, you can run `./showme "tv show title"`.
 
-Alternately, you can add `alias showme="go run ~/coding/golang/showme/showme.go"` to your bash profile (or `alias showme="go run ~/coding/golang/showme/showme"` for the binary). This will allow you to execute `showme "tv show title"` from anywhere in your console.
+If you add one of the aliases above to your bash profile, you can run `showme "tv show title"` from anywhere in your console.
 
 **Note that at this time, title names should be exact--including punctuation!** For example, `showme "bob's burgers"` will work, but `showme "bobs burgers` (without the apostrophe) will not.
 A future update will print out a list of suggested titles if an exact match is not found.
