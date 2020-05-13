@@ -15,12 +15,13 @@ Several interesting situations I encountered were:
 * [Testing pseudo-random number generator functionality](https://github.com/isalevine/showme/blob/8409ba6eb1357f3726817c71f6bf7117ec730a60/showme_test.go#L74) that uses [`time.Now().Unix()` as the seed for the `rand` object](https://github.com/isalevine/showme/blob/e43fa4be557503224474214e004805a198106a35/showme.go#L124)
 * Figuring out the [syntax needed to construct a slice of maps](https://github.com/isalevine/showme/blob/8409ba6eb1357f3726817c71f6bf7117ec730a60/showme_test.go#L70)
 
-### 3. This is a recreation of the core functionality of my first code-school project, [`Show Randomizer`](https://github.com/isalevine/show-randomizer)!
+### 3. This is a recreation of the core functionality of my first code-school project, [Show Randomizer](https://github.com/isalevine/show-randomizer)!
 I had several goals with recreating the TV-show-finding functionality of `showme`:
 * Build it in fewer lines of code.
 * Make the code as readable as possible.
 * Build it with test coverage.
 * Condense the original interface into a single console command, i.e. `showme "30 rock"`.
+
 I'm proud to say I accomplished all of those goals in the initial version of the code!
 
 
